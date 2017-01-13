@@ -8,7 +8,7 @@ package com.manstudios.helpers;
 
 // imports
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 /**
  *
@@ -16,7 +16,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
  */
 public class AssetLoader {
         // ATTRIBUTES
-    public static Texture texture;
+    //public static Texture texture;
+    public static Sound flap, coin, dead, hitmarker, song;
     public static BitmapFont font, shadow;
     
     /*public static TextureRegion bg, grass;
@@ -68,12 +69,24 @@ public class AssetLoader {
 
         bar = new TextureRegion(texture, 136, 16, 22, 3);
         bar.flip(false, true);*/
+        
+        dead = Gdx.audio.newSound(Gdx.files.internal("dead.wav"));
+        flap = Gdx.audio.newSound(Gdx.files.internal("flap.wav"));
+        coin = Gdx.audio.newSound(Gdx.files.internal("coin.wav"));
+        hitmarker = Gdx.audio.newSound(Gdx.files.internal("Hitmarker Sound.wav"));
+        song = Gdx.audio.newSound(Gdx.files.internal("narutomusic.wav"));
     }
     /**
      * Called when the game is being closed (to dispose of all loaded assets).
      */
     public static void dispose() {
-        texture.dispose();  // We must dispose of the texture when we are finished.
+        //texture.dispose();  // We must dispose of the texture when we are finished.
+        dead.dispose();
+        flap.dispose();
+        coin.dispose();
+        hitmarker.dispose();
+        song.dispose();
+        
         font.dispose();
         shadow.dispose();
     }

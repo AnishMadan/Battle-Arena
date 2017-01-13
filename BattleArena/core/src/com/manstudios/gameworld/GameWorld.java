@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Intersector;
 import com.manstudios.gameobjects.Avatar;
 import com.manstudios.gameobjects.Ranged;
+import com.manstudios.helpers.AssetLoader;
 import java.util.ArrayList;
 /**
  *
@@ -28,8 +29,8 @@ public class GameWorld {
      * @param gameHeight the height of the game when drawn
      */
     public GameWorld(int gameWidth, int gameHeight) {
-        p1 = new Avatar(50, gameHeight/4, 10, Color.BLUE);
-        p2 = new Avatar(540, gameHeight/4, 10, Color.RED);
+        p1 = new Avatar(50, gameHeight/4, 5, Color.BLUE);
+        p2 = new Avatar(540, gameHeight/4, 5, Color.RED);
     }
         // BEHAVIOURS
     /**
@@ -54,7 +55,23 @@ public class GameWorld {
             p2Attack.update(delta);
         }
         
-        // First should check if collides w/ opponent **************************88
+        // First should check if collides w/ opponent
+        for (int i = 0; i < p1RangedAttacks.size(); i++) {
+            Ranged p1Attack = p1RangedAttacks.get(i);
+            if(p1Attack.hits(p2)) {
+                p2.subtractHealth(1);
+                p1RangedAttacks.remove(i);
+                AssetLoader.hitmarker.play();
+            }
+        }
+        for (int i = 0; i < p2RangedAttacks.size(); i++) {
+            Ranged p2Attack = p2RangedAttacks.get(i);
+            if(p2Attack.hits(p1)) {
+                p1.subtractHealth(1);
+                p2RangedAttacks.remove(i);
+                AssetLoader.hitmarker.play();
+            }
+        }
         
         // Check if projectile is off the screen, if so remove it
         p1.checkScreenEdgeCollision();
@@ -76,8 +93,9 @@ public class GameWorld {
         if(avatarBodyCollision()) {
             //Gdx.app.log("GameWorld", "P1 old position: (" + p1.getPosition().x + ", " + p1.getPosition().y + ")");
             //Gdx.app.log("GameWorld", "P1 velocity: (" + p1.getVelocity().x + ", " + p1.getVelocity().y + ")");
+            AssetLoader.dead.play();
             
-            float a = 2.08f;
+            float a = 4.16f;
             float newPosChangeX = 0;
             if(p1.getVelocity().x > 0) {
                 newPosChangeX = a*-1f;
@@ -94,7 +112,7 @@ public class GameWorld {
             
             p1.setFullPosition(p1.getPosition().add(newPosChangeX, newPosChangeY)); 
             
-            float b = 2.08f;
+            float b = 4.16f;
             float newPosChangeX2 = 0;
             if(p2.getVelocity().x > 0) {
                 newPosChangeX2 = b*-1f;
@@ -141,7 +159,7 @@ public class GameWorld {
      * @return true if the Avatars' bodies collide
      */
     public boolean avatarBodyCollision() {
-        return (Intersector.overlaps(p1.getBoundingCircle(), p2.getBoundingCircle()));
+        return Intersector.overlaps(p1.getBoundingCircle(), p2.getBoundingCircle());
     }
     // ================================ Getters ================================
     /**

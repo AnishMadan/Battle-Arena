@@ -20,13 +20,13 @@ public class Avatar {
     private Vector2 position, velocity;
     
     private int radius;
-    private int health = 50;
+    private int health = 20;
     private Circle boundingCircle;  //for collision intersector
     private Color colour;
     
     private ArrayList<Ranged> rangedAttackList = new ArrayList<Ranged>();
     
-    private float movementSpeed = 100;
+    private float movementSpeed = 200;
     private float mass;
     
     // constants for actual game size (edge of game screen)
@@ -84,7 +84,7 @@ public class Avatar {
     }
     
     public void doRangedAttack(Avatar a, float xv, float yv) {
-        Ranged rangedAttack = new Ranged(position.x, position.y, 5, a.getColour(), xv, yv);
+        Ranged rangedAttack = new Ranged(position.x, position.y, 3, a.getColour(), xv, yv);
         rangedAttackList.add(rangedAttack);
     }
     
@@ -212,9 +212,17 @@ public class Avatar {
     // ================================ Setters ================================
     /**
      * Changes an Avatar's health
+     * @param hp the new health of the Avatar
      */
     public void setHealth(int hp) {
         health = hp;
+    }
+    /**
+     * Changes an Avatar's health
+     * @param hp the amount of health the Avatar lost
+     */
+    public void subtractHealth(int hp) {
+        health -= hp;
     }
     /**
      * Changes an Avatar's position

@@ -10,6 +10,7 @@ package com.manstudios.gameobjects;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Intersector;
 /**
  *
  * @author Mitchell Van Braeckel
@@ -73,7 +74,14 @@ public class Ranged {
                 || position.x + radius < 0 || position.x - radius > ACTUAL_GAME_WIDTH;
         // top, btm, left, right sides of screen check
     }
-    
+    /**
+     * Checks if projectile collides with other game objects
+     * @param a the opposing Avatar
+     * @return true if it collides with another game object
+     */
+    public boolean hits(Avatar a) {
+        return Intersector.overlaps(getBoundingCircle(), a.getBoundingCircle());
+    }
     // ================================ Getters ================================
     /**
      * Retrieves the x-position of an Avatar

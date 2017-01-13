@@ -15,6 +15,7 @@ import com.badlogic.gdx.Screen;
 import com.manstudios.helpers.InputHandler;
 import com.manstudios.gameworld.GameRenderer;
 import com.manstudios.gameworld.GameWorld;
+import com.manstudios.helpers.AssetLoader;
 /**
  *
  * @author Mitchell Van Braeckel
@@ -42,6 +43,7 @@ public class GameScreen implements Screen {
         
         // tells libGDX to take our new InputHandler as its processor
         Gdx.input.setInputProcessor(new InputHandler(world.getP1(), world.getP2()));   //player #1, player #2
+        AssetLoader.song.loop();
     }
         // BEHAVIOURS
     /**
@@ -93,6 +95,7 @@ public class GameScreen implements Screen {
      @Override
     public void pause() {
         Gdx.app.log("GameScreen", "pause called");
+        AssetLoader.song.pause();
     }
     /**
      * Called when it's resumed from a paused state (usually when it regains focus).
@@ -100,6 +103,7 @@ public class GameScreen implements Screen {
      @Override
     public void resume() {
         Gdx.app.log("GameScreen", "resume called");
+        AssetLoader.song.resume();
     }
     /**
      * Called when this screen should release all resources.
