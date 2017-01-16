@@ -17,12 +17,16 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.manstudios.gameobjects.Avatar;
 import com.manstudios.gameobjects.Ranged;
 import com.manstudios.helpers.AssetLoader;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 /**
  *
  * @author Mitchell Van Braeckel
  */
 public class GameRenderer {
+        // DECLARE FORMATS
+    DecimalFormat pf = new DecimalFormat("##0.00%");
+    
         // ATTRIBUTES
     private GameWorld myWorld;  //GameRenderer needs to have a reference to the GameWorld that it will be drawing,
                                 //whenever we want to refer to an object inside our GameWorld, we can retrieve it
@@ -84,8 +88,13 @@ public class GameRenderer {
         AssetLoader.font.draw(batcher, "Battle Arena", 250, 5);
         AssetLoader.shadow.draw(batcher, "P1 HEALTH: " + p1.getHealth(), 20, 350);
         AssetLoader.font.draw(batcher, "P1 HEALTH: " + p1.getHealth(), 20, 350);
-        AssetLoader.shadow.draw(batcher, "P2 HEALTH: " + p2.getHealth(), 420, 350);
-        AssetLoader.font.draw(batcher, "P2 HEALTH: " + p2.getHealth(), 420, 350);
+        AssetLoader.shadow.draw(batcher, "P2 HEALTH: " + p2.getHealth(), 410, 350);
+        AssetLoader.font.draw(batcher, "P2 HEALTH: " + p2.getHealth(), 410, 350);
+        
+        AssetLoader.shadow.draw(batcher, "P1 Accuracy: " + pf.format(p1.getHitCount() / p1.getShotCount()), 20, 300);
+        AssetLoader.font.draw(batcher, "P1 Accuracy: " + pf.format(p1.getHitCount() / p1.getShotCount()), 20, 300);
+        AssetLoader.shadow.draw(batcher, "P2 Accuracy: " + pf.format(p2.getHitCount() / p2.getShotCount()), 410, 300);
+        AssetLoader.font.draw(batcher, "P2 Accuracy: " + pf.format(p2.getHitCount() / p2.getShotCount()), 410, 300);
         /*float m = 4.4118f;
         batcher.disableBlending();  //Disable transparency (good for performance when drawing images that do not require transparency)
         batcher.draw(AssetLoader.bg, 0, actualGameHeight-43*m, 136*m, 43*m);

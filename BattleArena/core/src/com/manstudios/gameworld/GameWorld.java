@@ -10,6 +10,7 @@ package com.manstudios.gameworld;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Intersector;
 import com.manstudios.gameobjects.Avatar;
+import com.manstudios.gameobjects.Boulder;
 import com.manstudios.gameobjects.Ranged;
 import com.manstudios.helpers.AssetLoader;
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ public class GameWorld {
         // ATTRIBUTES
     //private Rectangle rect = new Rectangle(0, 0, 17, 12);
     private Avatar p1, p2;  //player #1, player #2
+    private ArrayList<Boulder> boulderList;
     
         // CONSTRUCTORS
     /**
@@ -31,6 +33,7 @@ public class GameWorld {
     public GameWorld(int gameWidth, int gameHeight) {
         p1 = new Avatar(50, gameHeight/4, 5, Color.BLUE);
         p2 = new Avatar(540, gameHeight/4, 5, Color.RED);
+        boulderList = new ArrayList<Boulder>();
     }
         // BEHAVIOURS
     /**
@@ -42,32 +45,34 @@ public class GameWorld {
         p1.update(delta);
         p2.update(delta);
         
+        for (int i = 0; i < boulderList.size(); i++) {  // do we really need this??????????????????
+            boulderList.get(i).update(delta);
+        }
+        
         // update Ranged objects and check screen collision
         ArrayList<Ranged> p1RangedAttacks = p1.getRangedAttackList();
         ArrayList<Ranged> p2RangedAttacks = p2.getRangedAttackList();
         
         for (int i = 0; i < p1RangedAttacks.size(); i++) {
-            Ranged p1Attack = p1RangedAttacks.get(i);
-            p1Attack.update(delta);
+            p1RangedAttacks.get(i).update(delta);
         }
         for (int i = 0; i < p2RangedAttacks.size(); i++) {
-            Ranged p2Attack = p2RangedAttacks.get(i);
-            p2Attack.update(delta);
+            p2RangedAttacks.get(i).update(delta);
         }
         
         // First should check if collides w/ opponent
         for (int i = 0; i < p1RangedAttacks.size(); i++) {
-            Ranged p1Attack = p1RangedAttacks.get(i);
-            if(p1Attack.hits(p2)) {
+            if(p1RangedAttacks.get(i).hits(p2)) {
                 p2.subtractHealth(1);
+                p1.incrementHitCount();
                 p1RangedAttacks.remove(i);
                 AssetLoader.hitmarker.play();
             }
         }
         for (int i = 0; i < p2RangedAttacks.size(); i++) {
-            Ranged p2Attack = p2RangedAttacks.get(i);
-            if(p2Attack.hits(p1)) {
+            if(p2RangedAttacks.get(i).hits(p1)) {
                 p1.subtractHealth(1);
+                p2.incrementHitCount();
                 p2RangedAttacks.remove(i);
                 AssetLoader.hitmarker.play();
             }
@@ -77,14 +82,12 @@ public class GameWorld {
         p1.checkScreenEdgeCollision();
         p2.checkScreenEdgeCollision();
         for (int i = 0; i < p1RangedAttacks.size(); i++) {
-            Ranged p1Attack = p1RangedAttacks.get(i);
-            if(p1Attack.isOffScreen()) {
+            if(p1RangedAttacks.get(i).isOffScreen()) {
                 p1RangedAttacks.remove(i);
             }
         }
         for (int i = 0; i < p2RangedAttacks.size(); i++) {
-            Ranged p2Attack = p2RangedAttacks.get(i);
-            if(p2Attack.isOffScreen()) {
+            if(p2RangedAttacks.get(i).isOffScreen()) {
                 p2RangedAttacks.remove(i);
             }
         }
@@ -128,9 +131,6 @@ public class GameWorld {
             }
             
             p2.setFullPosition(p2.getPosition().add(newPosChangeX2, newPosChangeY2));
-            
-            // lookee here!
-            // looker here! 2
             
             //Gdx.app.log("GameWorld", "P1 new position: (" + p1.getPosition().x + ", " + p1.getPosition().y + ")");
             

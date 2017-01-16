@@ -19,8 +19,8 @@ public class Avatar {
         // ATTRIBUTES
     private Vector2 position, velocity;
     
-    private int radius;
-    private int health = 20;
+    private int radius, health;
+    private double shotCount, hitCount;
     private Circle boundingCircle;  //for collision intersector
     private Color colour;
     
@@ -42,6 +42,8 @@ public class Avatar {
      * @param c the colour of the Avatar
      */
     public Avatar(float x, float y, int r, Color c) {
+        health = 20;
+        shotCount = 0;
         colour = c;
         radius = r;
         position = new Vector2(x, y);
@@ -84,6 +86,7 @@ public class Avatar {
     }
     
     public void doRangedAttack(Avatar a, float xv, float yv) {
+        shotCount++;
         Ranged rangedAttack = new Ranged(position.x, position.y, 3, a.getColour(), xv, yv);
         rangedAttackList.add(rangedAttack);
     }
@@ -203,6 +206,20 @@ public class Avatar {
         return health;
     }
     /**
+     * Retrieves an Avatar's shot count
+     * @return the Avatar's shot count
+     */
+    public double getShotCount() {
+        return shotCount;
+    }
+    /**
+     * Retrieves an Avatar's hit count
+     * @return the Avatar's hit count
+     */
+    public double getHitCount() {
+        return hitCount;
+    }
+    /**
      * Retrieves an Avatar's list of projectiles
      * @return the Avatar's list of projectiles
      */
@@ -218,11 +235,21 @@ public class Avatar {
         health = hp;
     }
     /**
-     * Changes an Avatar's health
+     * Decreases an Avatar's health
      * @param hp the amount of health the Avatar lost
      */
     public void subtractHealth(int hp) {
         health -= hp;
+        // make sure health doesn't go below zero
+        if(health < 0) {
+            health = 0;
+        }
+    }
+    /**
+     * Increments an Avatar's hit count
+     */
+    public void incrementHitCount() {
+        hitCount++;
     }
     /**
      * Changes an Avatar's position

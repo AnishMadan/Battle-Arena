@@ -7,6 +7,7 @@
 package com.manstudios.helpers;
 
 // imports
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.manstudios.gameobjects.Avatar;
